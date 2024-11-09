@@ -8,9 +8,9 @@ function fea = feaFourier_6(cycle2)
 %      fitresult : a fit object representing the fit.
 %      gof : structure with goodness-of fit info.
 %
-%  另请参阅 FIT, CFIT, SFIT.
+%  脕铆脟毛虏脦脭脛 FIT, CFIT, SFIT.
 
-%  由 MATLAB 于 23-Mar-2017 14:27:03 自动生成
+%  脫脡 MATLAB 脫脷 23-Mar-2017 14:27:03 脳脭露炉脡煤鲁脡
 
 
 %% Fit: 'untitled fit 1'.
