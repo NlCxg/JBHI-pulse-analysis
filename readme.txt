@@ -4,4 +4,5 @@ Once the paper is accepted, more codes will be released, including:
   (3) The typical pulse wave of different diseases.
   (4) Feature visualization
 
+More information about our Lab and topics is available at https://hw1761.huaweicloudsite.cn/en/
 Nov 8th, 2024
