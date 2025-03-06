@@ -7,7 +7,7 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, precision_score, recall_score
 import scipy.io
 mat_file_path = 'He_vs_dm_stft.mat'
-# 生成600个样本，每个样本维度为200的二分类数据集
+
 # X, y = make_classification(n_samples=600, n_features=200, n_informative=10, n_redundant=10, random_state=42)
 X = scipy.io.loadmat(mat_file_path)
 X =  X["data"]
@@ -25,14 +25,14 @@ for kk in range(10):
     )
     kf = StratifiedKFold(n_splits=5, shuffle=True)
     for train_index, test_index in kf.split(X,y):
-        # 划分训练集和测试集
+
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = y[train_index], y[test_index]
-        # 训练Adaboost模型
+
         model_xgbst.fit(X_train, y_train)
-        # 进行预测
+
         y_pred = model_xgbst.predict(X_test)
-        # 计算准确率
+
         acc = accuracy_score(y_test, y_pred)
         cm = confusion_matrix(y_test, y_pred)
         tn, fp, fn, tp = cm.ravel()
@@ -45,7 +45,6 @@ for kk in range(10):
         all_metrics['f1_score'].append(f1)
         all_metrics['precision'].append(precision)
 
-    # 计算各指标的平均值
 average_accuracy = np.mean(all_metrics['accuracy'])
 std_accuracy = np.std(all_metrics['accuracy'])
 
