@@ -28,7 +28,7 @@ for kk in range(6):  #range(data_dm.shape[1]):
     results.append(p_value)
     alpha = 0.05
     if p_value < alpha:
-        print("抑郁存在显著差异（拒绝零假设）")
+        print("")
     else:
         print(f"{kk} + {p_value}")
 
