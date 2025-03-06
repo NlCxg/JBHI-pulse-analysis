@@ -8,14 +8,14 @@ from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, precisio
 import scipy.io
 mat_file_path = 'He_vs_dm_stft.mat'
 
-# 生成600个样本，每个样本维度为200的二分类数据集
+
 X = scipy.io.loadmat(mat_file_path)
 X =  X["data"]
 zeros_part = np.zeros(200)
 ones_part = np.ones(200)
 y = np.concatenate((zeros_part, ones_part))
 
-# 进行5折交叉验证
+
 all_metrics = {'accuracy': [], 'g_mean': [], 'f1_score': [], 'precision': []}
 accuracies = []
 
@@ -23,12 +23,12 @@ for kk in range(10):
     svm_classifier = SVC(kernel='rbf')
     kf = StratifiedKFold(n_splits=5, shuffle=True)
     for train_index, test_index in kf.split(X, y):
-        # 划分训练集和测试集
+
         X_train, X_test = X[train_index], X[test_index]
         y_train, y_test = y[train_index], y[test_index]
-        # 训练SVM模型
+
         svm_classifier.fit(X_train, y_train)
-        # 进行预测
+
         y_pred = svm_classifier.predict(X_test)
 
         acc = accuracy_score(y_test, y_pred)
@@ -43,7 +43,7 @@ for kk in range(10):
         all_metrics['f1_score'].append(f1)
         all_metrics['precision'].append(precision)
 
-# 计算各指标的平均值
+
 average_accuracy = np.mean(all_metrics['accuracy'])
 std_accuracy = np.std(all_metrics['accuracy'])
 
