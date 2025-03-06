@@ -8,7 +8,7 @@ import numpy as np
 import scipy.io
 mat_file_path = 'He_vs_dm_stft.mat'
 
-# 自定义数据集类
+
 class CustomDataset(Dataset):
     def __init__(self, data, labels):
         self.data = torch.tensor(data, dtype=torch.float32)
@@ -19,7 +19,7 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         return self.data[idx], self.labels[idx]
 
-# 位置编码类
+
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model, max_len=5000):
         super(PositionalEncoding, self).__init__()
@@ -34,7 +34,7 @@ class PositionalEncoding(nn.Module):
         x = x + self.pe[:, :x.size(1)]
         return x
 
-##### start  加载数据集 #######
+##### start   #######
 XX = scipy.io.loadmat(mat_file_path)
 data = XX["data"]
 sample_num = data.shape[0]
@@ -46,7 +46,7 @@ zeros_part = np.zeros(200)
 ones_part = np.ones(200)
 labels = np.concatenate((zeros_part, ones_part))
 
-# 超参数设置
+# parameters
 d_model = 150
 nhead = 2
 num_layers = 1
@@ -55,7 +55,7 @@ batch_size = 16
 epochs = 10
 learning_rate = 0.001
 
-# Transformer 分类器类
+# Transformer 
 class TransformerClassifier(nn.Module):
     def __init__(self, input_dim, d_model, nhead, num_layers, num_classes):
         super(TransformerClassifier, self).__init__()
@@ -74,7 +74,7 @@ class TransformerClassifier(nn.Module):
         x = self.fc(x)
         return x
 
-# 计算 G-mean
+# G-mean
 def gmean(y_true, y_pred):
     from sklearn.metrics import confusion_matrix
     tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
@@ -82,7 +82,6 @@ def gmean(y_true, y_pred):
     specificity = tn / (tn + fp)
     return np.sqrt(sensitivity * specificity)
 
-# 五折交叉验证
 all_accuracies = []
 all_f1_scores = []
 all_gmeans = []
@@ -96,22 +95,19 @@ for k in range(20):
         fold += 1
         print(f"Fold {fold}")
 
-        # 划分训练集和测试集
+        
         X_train, X_test = data[train_index], data[test_index]
         y_train, y_test = labels[train_index], labels[test_index]
-
-        # 创建数据集和数据加载器
+        
         train_dataset = CustomDataset(X_train, y_train)
         test_dataset = CustomDataset(X_test, y_test)
         train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
         test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
-        # 初始化模型、损失函数和优化器
         model = TransformerClassifier(input_dim, d_model, nhead, num_layers, num_classes)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
-        # 训练模型
         for epoch in range(epochs):
             model.train()
             running_loss = 0.0
@@ -124,7 +120,6 @@ for k in range(20):
                 running_loss += loss.item()
             #print(f"Epoch {epoch + 1}/{epochs}, Loss: {running_loss / len(train_loader)}")
 
-        # 评估模型
         model.eval()
         y_true = []
         y_pred = []
@@ -135,7 +130,6 @@ for k in range(20):
                 y_true.extend(targets.numpy())
                 y_pred.extend(predicted.numpy())
 
-        # 计算评价指标
         accuracy = accuracy_score(y_true, y_pred)
         f1 = f1_score(y_true, y_pred)
         g_mean = gmean(y_true, y_pred)
@@ -147,7 +141,6 @@ for k in range(20):
         all_metrics['f1_score'].append(f1)
         all_metrics['precision'].append(precision)
 
-# 计算各指标的平均值
 average_accuracy = np.mean(all_metrics['accuracy'])
 std_accuracy = np.std(all_metrics['accuracy'])
 
