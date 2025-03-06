@@ -89,7 +89,7 @@ all_gmeans = []
 all_precisions = []
 all_metrics = {'accuracy': [], 'g_mean': [], 'f1_score': [], 'precision': []}
 
-for k in range(10):
+for k in range(20):
     fold = 0
     skf = StratifiedKFold(n_splits=5, shuffle=True)
     for train_index, test_index in skf.split(data, labels):
