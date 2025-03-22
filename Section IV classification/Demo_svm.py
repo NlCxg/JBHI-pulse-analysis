@@ -19,7 +19,7 @@ y = np.concatenate((zeros_part, ones_part))
 all_metrics = {'accuracy': [], 'g_mean': [], 'f1_score': [], 'precision': []}
 accuracies = []
 
-for kk in range(10):
+for kk in range(20):
     svm_classifier = SVC(kernel='rbf')
     kf = StratifiedKFold(n_splits=5, shuffle=True)
     for train_index, test_index in kf.split(X, y):
