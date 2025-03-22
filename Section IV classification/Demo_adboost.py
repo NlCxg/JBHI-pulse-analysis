@@ -16,7 +16,7 @@ ones_part = np.ones(200)
 y = np.concatenate((zeros_part, ones_part))
 
 all_metrics = {'accuracy': [], 'g_mean': [], 'f1_score': [], 'precision': []}
-for kk in range(10):
+for kk in range(20):
     adaboost = AdaBoostClassifier()
     model_xgbst = xgb.XGBClassifier(
         n_estimators=100,
