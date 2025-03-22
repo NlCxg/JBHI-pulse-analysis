@@ -48,7 +48,7 @@ dataset = CustomDataset(X, y)
 
 fold = 0
 all_metrics = {'accuracy': [], 'g_mean': [], 'f1_score': [], 'precision': []}
-for k in range(5):
+for k in range(20):
     skf = StratifiedKFold(n_splits=5, shuffle=True)
     for fold, (train_idx, val_idx) in enumerate(skf.split(X.reshape(-1, 150), y)):  
         print(f"Fold {fold + 1}")  
